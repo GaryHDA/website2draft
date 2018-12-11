@@ -1,0 +1,115 @@
+{% extends "dirt/hd_base.html" %}
+
+{% load static %}
+{% block templateComments %}
+<!-- The template for hammerdirt california
+Variables used:
+summary_table.html
+map_search.html'
+charts_scatter.html'
+total_inventory.html'
+op_ten_code_material.html
+box_one.html
+list_of_lakes_rivers.html
+dirt/locations_samples.html
+dirt/data_search.html
+dirt/survey_map.html
+dirt/combined_scatter.html
+ -->
+{% endblock %}
+{% block loader %}
+<!--
+ This is the load spinner and the
+ div that centers it, they are both made
+ inivisible when the map is finished loading
+ -->
+ <div id="loading2" class="cn">
+   <div id="loading" class="spinner"><strong></strong></div>
+ </div>
+ {% endblock %}
+ {% block og_data %}
+ <title>H-dirt California</title>
+ <!-- Open Graph Data -->
+ <meta property="og:title" content="This is hammerdirt California" />
+ <meta property="og:type" content="article" />
+ <meta property="og:url" content="http://mwshovel.pythonanywhere.com/dirt/california.html" />
+ <meta property="og:image" content= "{% static 'images/garys_og_image.jpg' %}" />
+ <meta property="og:image:width" content="720" />
+ <meta property="og:image:height" content="540" />
+ <meta property="og:description" content="Helping you create knowledge.  A research partner that specializes in the development of data products for and from crowd sourced research projects." />
+ <meta property="og:site_name" content="This is hammerdirt California" />
+ {% endblock %}
+{% block style %}
+.col-sm{
+  min-width:400px;
+}
+{% endblock %}
+
+{% block content  %}
+{% load humanize %}
+{% load static %}
+ <div class="container-fluid p-0 m-0" style="width:100%; height:auto">
+     <div class="row no-gutters bg-dark mt-1">
+         <p class="text-white"> The initiative to apply litter sampling survey methods, developed by hammerdirt in MCBP-1 and MCBP-2, to California waterways began in December 2015. Applying lessons learned during the previous projects, this one had the following objectives: To confirm and quantify the existence of trash in the water at the confluence of Cordova Creek and the American River; to establish a baseline litter density for the location; and, to further develop and improve the process of litter surveillance.</p>
+     </div>
+     <div class="row no-gutters" id="combined-data-row" style="">
+         <div class="col-sm h-100" id="data-summary-column" style="">
+             {% include 'dirt/summary_table.html' %}
+         </div>
+         <div class="col-sm h-100" id="map-search-column" style="">
+             {% include 'dirt/map_search.html' %}
+         </div>
+         <div class="col-sm h-100" id="charts-column" style="">
+             {% include 'dirt/charts_scatter.html' %}
+         </div>
+     </div>
+     <div class="row no-gutters bg-dark mt-1">
+         <p class="text-white"> We have grants for organizations with unfunded requirements. Contact us for more information.</p>
+     </div>
+ </div>
+{% include 'dirt/total_inventory.html' %}
+{% include 'dirt/top_ten_code_material.html' %}
+{% include 'dirt/box_one.html' %}
+{% include 'dirt/list_of_lakes_rivers.html' %}
+{% include 'dirt/locations_samples.html' %}
+{% include 'dirt/data_search.html' %}
+{% endblock %}
+{% block buttons %}
+<!--
+These are the scripts that control the popover for
+the sponsor and participant icons in the data summary
+-->
+<script type="text/javascript">
+  var popOverClose = '<button onclick="$(this).closest(\'div.popover\').popover(\'hide\');" type="button" class="close" aria-hidden="true">&times;</button>'
+</script>
+{% for x in sponsors %}
+<script type="text/javascript">
+  $('#{{ x.0|slugify }}').popover({
+      container: 'body',
+      title:"<a href='{{ x.2 }}'> {{ x.0 }}</a>",
+      content:'{{ x.3 }}'+ popOverClose,
+      placement:'top',
+      trigger:'click',
+      });
+</script>
+{% endfor %}
+{% for x in crew %}
+<script type="text/javascript">
+  $('#{{ x.0|slugify }}').popover({
+      container: 'body',
+      title:"<a href='{{ x.2 }}'> {{ x.0 }}</a>",
+      content:'{{ x.3 }}'+ popOverClose,
+      placement:'top',
+      trigger:'click',
+      });
+</script>
+{% endfor %}
+{% endblock %}
+{% block charts %}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/highcharts-more.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+{% include 'dirt/survey_map.html' %}
+{% include 'dirt/combined_scatter.html' %}
+{% endblock %}
